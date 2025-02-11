@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM Study Files</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        h1 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { text-decoration: none; color: #007BFF; font-size: 18px; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>NotebookLM Study Files</h1>
+    <p>Click on a file to open it.</p>
+    <ul id="file-list"></ul>
+    <script>
+        fetch('.')
+            .then(response => response.text())
+            .then(html => {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(html, 'text/html');
+                let links = doc.querySelectorAll('a');
+                let fileList = document.getElementById('file-list');
+                
+                links.forEach(link => {
+                    let href = link.getAttribute('href');
+                    if (href.endsWith('.htm') || href.endsWith('.html')) {
+                        let listItem = document.createElement('li');
+                        let anchor = document.createElement('a');
+                        anchor.href = href;
+                        anchor.textContent = href;
+                        listItem.appendChild(anchor);
+                        fileList.appendChild(listItem);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching file list:', error));
+    </script>
+</body>
+</html>
